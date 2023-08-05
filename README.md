@@ -23,12 +23,12 @@ Python classes have special (also known as "magic") methods, that are dunders (i
 These are methods with special names that give instructions to Python for how to deal with objects.
 
 
-
-If the first (left) operand is an instance of int, add _() does mathematical addition. If it's a string, it does string concatenation.
++ operator is speacial method called __add__() that get called on the first operand
+If the first (left) operand is an instance of int, __add__() does mathematical addition. If it's a string, it does string concatenation.
 
 Therefore, you can declare special methods on your own classes to mimic
-the behavior of builtin objects, like so using len
+the behavior of builtin objects, like so using __len__
 
-The _repr_ method is one of several ways to provide a 
+The __repr__ method is one of several ways to provide a 
 nicer string representation:
 
