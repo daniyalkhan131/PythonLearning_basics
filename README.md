@@ -32,3 +32,6 @@ the behavior of builtin objects, like so using __len__
 The __repr__ method is one of several ways to provide a 
 nicer string representation:
 
+Decorators are examples of higher order functions
+• Decorators have their own syntax, using "@" (syntactic sugar)
+
