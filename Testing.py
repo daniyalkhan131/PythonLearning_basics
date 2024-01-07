@@ -115,19 +115,141 @@
 #You can run tests by calling unittest.main ()
 
 import unittest
-from testing_called import eat, nap
+from testing_called import eat, nap, is_funny, laugh
 
+# class ActivityTests(unittest.TestCase): #we have to inherit unittest capability
+
+# 	def test_eat(self):
+# 		self.assertEqual(
+# 			eat("broccoli", is_healthy=True),
+# 			"broccoli!, because get u fit"
+# 			)
+# 		self.assertEqual(
+# 			eat("pizza", is_healthy=False),
+# 			"pizza!, because taste good"
+# 			)
+
+#we have to write this as testing different things
 class ActivityTests(unittest.TestCase): #we have to inherit unittest capability
 
-	def test_eat(self):
-		self.assertEqual(
+    def test_eat_healthy(self):
+    	"""eat should have a positive message for healthy eating"""
+    	self.assertEqual(
 			eat("broccoli", is_healthy=True),
-			"broccoli!, because get u fit"
-			)
-		self.assertEqual(
+			"I'm eating broccoli, because my body is a temple"
+    	)
+    def test_eat_unhealthy(self):
+    	"""eat should indicate you've given up for eating unhealthy"""
+    	self.assertEqual(
 			eat("pizza", is_healthy=False),
-			"pizza!, because taste good"
-			)
+			"I'm eating pizza, because YOLO!"
+		)
+
+	#adding tests for nap
+    def test_short_nap(self):
+    	"""short naps should be refreshing"""
+    	self.assertEqual(
+    		nap(1),
+    		"I'm feeling refreshed after my 1 hour nap"
+    	)
+    def test_long_nap(self):
+    	"""long naps should be discouraging"""
+    	self.assertEqual(
+    		nap(3), "Ugh I overslept.  I didn't mean to nap for 3 hours!"
+    	)
+
+#we can do commentign the tests
+#put them in docstring
+#then run with command python3 nameoffile.py -v
+
+
+#different types of assert
+#assertNotEqual(x,y)
+#assertTrue(x)  
+#assertFalse(x)
+
+
+#assertFalse(x) is not equal to assertEqual(x, False) as assertFalse consider
+#false values also to be false like None, it will consider it as run successfully
+#the none value
+
+    def test_is_funny_tim(self):
+    	self.assertEqual(is_funny("tim"), False)
+    	#self.assertFalse(is_funny("tim"), "tim should not be funny")
+
+    def test_is_funny_anyone_else(self):
+    	"""anyone else but tim should be funny"""
+    	self.assertTrue(is_funny("blue"), "blue should be funny")
+    	#we can add message in this that will be displayed
+    	self.assertTrue(is_funny("tammy"), "tammy should be funny")
+    	self.assertTrue(is_funny("sven"), "sven should be funny")
+
+#asserIsNone(x)
+#asserIsNotNone(x)
+#assertIn(x)
+#assertNotIn(x)
+#etc...
+
+    def test_laugh(self):
+    	"""laugh returns a laughing string"""
+    	self.assertIn(laugh(), ('lol', 'haha', 'tehehe'))
+
+#we can raise error  and also specific error type
+    def test_eat_healthy_boolean(self):
+    	"""is_healthy must be a bool"""
+    	with self.assertRaises(ValueError):
+    		eat("pizza", is_healthy="who cares?")
+
+#for larger application, having database connected so for that we use
+#setUp and tearDown    		
+
+#For larger applications, you may want similar application state before running tests
+#setUp runs before each test method
+#tearDown runs after each test method
+#Common use cases: adding/removing data from a test database, creating instances of a class
+
+from robot_testing_called import Robot
+
+
+# class RobotTests(unittest.TestCase):
+
+#     def test_charge(self):
+#     	mega_man=Robot("Mage man",battery=50)
+#     	mega_man.charge()
+#     	self.assertEqual(mega_man.battery, 100)
+
+#     def test_say_name(self):
+#     	mega_man=Robot("Mage man",battery=50)
+#     	self.assertEqual(
+#     		mega_man.say_name(),
+#     		"BEEP BOOP BEEP BOOP.  I AM MEGA MAN")
+#     	self.assertEqual(mega_man.battery, 49)
+
+#in this we are again and again intantiating Robot then testing
+#but using setup teardown help us to not write things again and again
+
+
+class RobotTests(unittest.TestCase):
+    def setUp(self):
+        self.mega_man = Robot("Mega Man", battery=50)
+
+    def test_charge(self):
+        self.mega_man.charge()
+        self.assertEqual(self.mega_man.battery, 100)
+
+    def test_say_name(self):
+        self.assertEqual(
+            self.mega_man.say_name(),
+            "BEEP BOOP BEEP BOOP.  I AM MEGA MAN")
+        self.assertEqual(self.mega_man.battery, 49)
+
+#it will not be equal to like without writing setup we do mega_man=Robot
+#because changes made by one test battery will be reflected when next test
+#ru, it will have the changes made by previous test
+#but in setup for every etst case setup is run so fresh value will be there
+#like battery=100
 
 if __name__=='__main__':
 	unittest.main()
+
+
